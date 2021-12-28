@@ -26,7 +26,8 @@ class Level:
                 if cell == 'P':
                     player_model = Player((x, y))
                     self.player_group.add(player_model)
-
+     
+    # camera func
     def scroll_x(self):
         player = self.player_group.sprite
         player_x = player.rect.centerx
@@ -41,12 +42,15 @@ class Level:
         else:
             self.world_shift = 0
             player.speed = 8
-
+    
+    # applying horizontal collision
     def horizontal_movement_collision(self):
         player = self.player_group.sprite
         player.rect.x += player.direction.x * player.speed
 
         for sprite in self.tile_group.sprites():
+            
+            # detecting changes in player.rect connected with axis(x)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
@@ -61,12 +65,15 @@ class Level:
             player.on_left = False
         elif player.on_right and (player.rect.right < self.current_x_pos or player.direction.x < 0):
             player.on_right = False
-
+    
+    # applying vertical collision
     def vertical_movement_collision(self):
         player = self.player_group.sprite
         player.apply_gravity()
 
         for sprite in self.tile_group.sprites():
+            
+            # detecting changes in player.rect connected with axis(y)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
@@ -82,11 +89,11 @@ class Level:
             player.on_ceiling = False
     def run(self):
 
-        # level tiles
+        # drawing level tiles
         self.tile_group.update(self.world_shift)
         self.tile_group.draw(self.display_surface)
 
-        # player
+        # drawing player
         self.player_group.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
