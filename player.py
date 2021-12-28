@@ -21,12 +21,14 @@ class Player(pygame.sprite.Sprite):
         # player status
         self.status = 'idle'
         self.player_facing_right = True
-        # collide types
+        
+        # collision types
         self.on_ground = False
         self.on_ceiling = False
         self.on_left = False
         self.on_right = False
-
+       
+    # creates player model animation
     def apply_character_assets(self):
         character_path = 'sprites/character'
         self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
@@ -35,7 +37,8 @@ class Player(pygame.sprite.Sprite):
             full_path = character_path + '/' + animation
             # open_folder() imported from support_func
             self.animations[animation] = open_folder(full_path)
-
+    
+    # animating the character
     def animate_character(self):
         animation = self.animations[self.status]
         self.frame_index += self.animation_update_speed
@@ -64,7 +67,8 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
         elif self.on_ceiling:
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
-
+    
+    # reacting to the keyboard input
     def get_input(self):
         keys = pygame.key.get_pressed()
 
@@ -78,7 +82,8 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
         if keys[pygame.K_SPACE] and self.on_ground:
             self.jump()
-
+    
+    # changing self.status depending on different player movements
     def get_character_status(self):
         if self.direction.y < 0:
             self.status = 'jump'
@@ -89,7 +94,8 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'run'
             else:
                 self.status = 'idle'
-
+    
+    # support func for jump
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
