@@ -95,7 +95,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.status = 'idle'
     
-    # support func for jump
+    # support func, used in level.py/class Level/def vertical_movement_collision(self)
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
